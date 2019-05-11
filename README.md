@@ -10,6 +10,8 @@ The code is tested on the legacy vagrant environment
 
 This code also has new features as *"signOut"* & *"Login"* links addeed to the restaurant page
 
+![Restaurant main Page](https://github.com/sananand007/OAuth2.0/blob/master/DeepinScreenshot_select-area_20190511121248.png)
+
 
 # Installing the Vagrant VM for ud330 - Authentication & Authorization
 
