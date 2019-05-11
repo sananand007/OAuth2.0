@@ -1,5 +1,16 @@
 # OAuth2.0
 Starter Code for Auth&amp;Auth course
+# Making the Code work with latest OAuth2.0 googleApi changes with Javascript
+
+This changed Codework has changes required to remove Jquery and Ajax completely and do all the Login and Logout requests using Javascript on python 2.7
+
+No New libraries are required 
+
+The code is tested on the legacy vagrant environment 
+
+This code also has new features as *"signOut"* & *"Login"* links addeed to the restaurant page
+
+
 # Installing the Vagrant VM for ud330 - Authentication & Authorization
 
 **Note: If you already have a vagrant machine installed from previous Udacity courses skip to the 'Fetch the Source Code and VM Configuration' section**
