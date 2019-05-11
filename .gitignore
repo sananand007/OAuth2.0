@@ -6,7 +6,12 @@
 *.exe
 *.o
 *.so
-*.vagrant
+
+# ignore all vagrant files
+**/.vagrant
+
+# ignore all .json files
+*.json
 
 # Packages #
 ############
@@ -26,4 +31,3 @@
 *.log
 *.sql
 *.sqlite
-*.json
