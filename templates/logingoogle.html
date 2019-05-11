@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="google-signin-client_id" content="940158863114-ujf4runphi88nehhmga3c5f4g80h9cai.apps.googleusercontent.com">
+  <link href='//fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="my-signin2"></div>
+  <script>
+    function offlineAccess(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // request offline access
+        gapi.auth2.getAuthInstance().grantOfflineAccess({ "prompt": "consent" }).then(function (resp) {
+          var auth_code = resp.code;
+          console.log(resp);
+          $.ajax({
+            type: "POST",
+            url: "{{url_for('gconnect')}}?state={{state}}",
+            processData: false,
+            contentType: 'application/octet-stream; charset=utf-8',
+            data: auth_code,
+            success: function (result) {
+              $("body").html(result);
+              setTimeout(function () { window.location.href = '/restaurant' }, 5000);
+
+            }
+          });
+        });
+      }
+
+    function onSuccess(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Logged in as : ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        document.writeln('Login Successful ! .. Redirecting now .....');
+        demo();
+    }
+    function onFailure(error) 
+    {
+      console.log(error);
+    }
+    function sleep(ms) 
+    {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function demo()
+    {
+        console.log('Taking a break...');
+        await sleep(6000);
+        window.location.replace("/restaurant");
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': offlineAccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
