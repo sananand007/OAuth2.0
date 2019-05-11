@@ -5,13 +5,13 @@
   <link href='//fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 
   <!--google -->
-  <script src="//apis.google.com/js/platform.js?onload=init" async defer></script>`
+  <script src="//apis.google.com/js/platform.js?onload=init" async defer></script>
 
   <meta name="google-signin-client_id"
-    content="759306340031-p8a40fq9t90jfrhiqpe72t8r2v01s8rl.apps.googleusercontent.com">
+    content="{{ GOOGLE_CLIENT_ID }}">
 
 </head>
 
@@ -22,14 +22,35 @@
     <!-- start Google Start Login -->
     <script>
       function init() {
+        if (window.Promise && window.fetch) {
+          console.log('Browser check passed. No polyfills needed.')
+          loadGoogleOAuth();
+        } else {
+          console.log('Browser check failed. Loading required polyfills');
+          var js = document.createElement('script');
+          js.src = 'https://polyfill.io/v3/polyfill.min.js?features=Promise,fetch';
 
+          js.onload = function() {
+            loadGoogleOAuth();
+          };
+
+          js.onerror = function() {
+            console.error('Required polyfills FAILED to load.');
+            console.error('Google Sign in FAILED to load.');
+          };
+
+          document.head.appendChild(js);
+        }
+      }
+
+      function loadGoogleOAuth() {
         gapi.load('auth2', function () {
 
           var gauth2 = gapi.auth2.init();
           setTimeout(function(){
             gauth2.signOut().then(function () {
               console.log('User signed out.');
-              window.location.href = '/signin';
+              window.location.href = '/';
             });
 
           }, 2000);
